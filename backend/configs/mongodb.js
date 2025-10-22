@@ -4,7 +4,7 @@ import mongoose from "mongoose"
 
 const connectDB = async()=>{
     mongoose.connection.on('connected', ()=>{
-        console.log("Dabase connected")
+        console.log("Database connected")
     })
     await mongoose.connect(`${process.env.MONGODB_URI}/ericailms`)
 }

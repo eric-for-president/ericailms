@@ -6,13 +6,16 @@ import { AppContext } from "../../context/AppContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Logger from "../../components/students/Logger.jsx";
+import { Shield } from "lucide-react";
+
 const Navbar = () => {
-
-
     const isCourseListPage = location.pathname.includes("/course-list");
     const {navigate, isEducator, backendUrl, setIsEducator, getToken} = useContext(AppContext);
     const { openSignIn } = useClerk();
     const { user } = useUser();
+
+    // Check if user is admin from Clerk's publicMetadata
+    const isAdmin = user?.publicMetadata?.role === 'admin';
 
     const becomeEducator = async () => {
         try {
@@ -55,7 +58,24 @@ const Navbar = () => {
                 <div className="flex items-center gap-5">
                     {user && (
                         <>
-                            <button onClick={becomeEducator}>{isEducator ? "Educator Dashboard" : "Become Educator" }</button>|{" "}
+                            {/* Admin Dashboard Link */}
+                            {isAdmin && (
+                                <>
+                                    <Link
+                                        to="/admin"
+                                        className="flex items-center gap-2 text-purple-600 font-semibold hover:text-purple-700"
+                                    >
+                                        <Shield className="w-4 h-4" />
+                                        Admin Dashboard
+                                    </Link>
+                                    |
+                                </>
+                            )}
+
+                            <button onClick={becomeEducator}>
+                                {isEducator ? "Educator Dashboard" : "Become Educator"}
+                            </button>
+                            |
                             <Link to="/my-enrollments">My Enrollments</Link>
                         </>
                     )}
@@ -68,17 +88,34 @@ const Navbar = () => {
                         onClick={() => openSignIn()}
                         className="bg-blue-600 text-white px-5 py-2 rounded-full"
                     >
-                        Create Account
+                        Sign In
                     </button>
                 )}
             </div>
-            <div className="md:hidden flex items-center gap-2 sm:gap-5 text-gray-500">
-                {/* for phone scree  */}
 
+            {/* Mobile View */}
+            <div className="md:hidden flex items-center gap-2 sm:gap-5 text-gray-500">
                 <div className="flex items-center gap-1 sm:gap-2 max-sm:text-xs">
                     {user && (
                         <>
-                            <button onClick={becomeEducator}>{isEducator ? "Educator Dashboard" : "Become Educator" }</button>|{" "}
+                            {/* Admin Dashboard Link - Mobile */}
+                            {isAdmin && (
+                                <>
+                                    <Link
+                                        to="/admin"
+                                        className="flex items-center gap-1 text-purple-600 font-semibold"
+                                    >
+                                        <Shield className="w-3 h-3" />
+                                        Admin
+                                    </Link>
+                                    |
+                                </>
+                            )}
+
+                            <button onClick={becomeEducator}>
+                                {isEducator ? "Educator Dashboard" : "Become Educator"}
+                            </button>
+                            |
                             <Link to="/my-enrollments">My Enrollments</Link>
                         </>
                     )}

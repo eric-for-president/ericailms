@@ -16,6 +16,7 @@
     "axios": "^1.12.2",
     "cloudinary": "^2.8.0",
     "humanize-duration": "^3.33.1",
+    "lucide-react": "^0.546.0",
     "phosphor-react": "^1.4.1",
     "quill": "^2.0.3",
     "rc-progress": "^4.0.0",
